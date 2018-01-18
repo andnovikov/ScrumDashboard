@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScrumDashboard.Classes
 {
+    [Table(Name = "ScrumTask")]
     public class ScrumTask
     {
         public ScrumTask() { }
@@ -18,13 +20,20 @@ namespace ScrumDashboard.Classes
             this.Category = Category;
         }
 
+        [Column(IsPrimaryKey = true)]
         public int ID { get; set; }
+        [Column]
         public int ExternalID { get; set; }
+        [Column]
         public string Title { get; set; }
+        [Column]
         public string Description { get; set; }
         // public string[] Tags { get; set; }
+        [Column]
         public object Category { get; set; }
+        /*[Column]
         public Uri ImageURL { get; set; }
-        public object ColorKey { get; set; }
+        [Column]
+        public object ColorKey { get; set; }*/
     }
 }

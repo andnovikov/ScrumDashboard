@@ -3,6 +3,7 @@ using Syncfusion.Windows.SampleLayout;
 using ScrumDashboard.Classes;
 using Syncfusion.Windows.Shared;
 using System;
+using System.Data.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -49,46 +50,19 @@ namespace ScrumDashboard
     {
         public TaskDetails()
         {
-            ScrumTasks = new ObservableCollection<ScrumTask>();
+            // DataContext takes a connection string. 
+            DataContext db = new DataContext("Data Source=andrew256;Initial Catalog=scrumdashboard;Integrated Security=True");
 
-            {
-                ScrumTask task = new ScrumTask(6593, 0, "UWP Issue", "Sorting is not working properly in DateTimeAxis", "Postponed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(6593, 0, "New Feature", "Need to create code base for Gantt control", "Postponed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(6593, 0, "UG", "Sorting is not working properly in DateTimeAxis", "Postponed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(6516, 0, "UWP Issue", "Need to do post processing work for closed incidents", "Postponed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(651, 0, "UWP Issue", "Crosshair label template not visible in UWP.", "Open");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(646, 0, "UWP Issue", "AxisLabel cropped when rotate the axis label.", "Open");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(23822, 0, "WPF Issue", "Need to implement tooltip support for histogram series.", "Open");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(25678, 0, "Kanban Feature", "Need to prepare SampleBrowser sample", "InProgress");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(1254, 0, "WP Issue", "HorizontalAlignment for tooltip is not working", "InProgress");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(28066, 0, "WPF Issue", "In minimized state, first and last segment have incorrect spacing", "Review");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(29477, 0, "WPF Issue", "Null reference exception thrown in line chart", "Review");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(29574, 0, "WPF Issue", "Minimum and maximum property are not working in dynamic update", "Review");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(25678, 0, "Kanban Feature", "Need to implement tooltip support for SfKanban", "Review");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(29574, 0, "New Feature", "Dragging events support for SfKanban", "Closed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(29574, 0, "loooooooooooooooooooooooooooooooooong name", "Dragging events support for SfKanban", "Closed");
-                ScrumTasks.Add(task);
-                task = new ScrumTask(29574, 0, "UWP Issue", "Swimlane support for SfKanban", "Open");
-                ScrumTasks.Add(task);
-            }
+            // Get a typed table to run queries.
+            Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
+
+            // Query for customers from London.
+            var query =
+                from tsk in ScrumTsks
+                select tsk;
 
             KanbanTasks = new ObservableCollection<KanbanModel>();
-            foreach (ScrumTask task in ScrumTasks)
-            {
+            foreach (var task in query) {
                 KanbanModel kbTask = new KanbanModel();
                 kbTask.ID = task.ID.ToString();
                 kbTask.Title = task.Title;
@@ -101,7 +75,6 @@ namespace ScrumDashboard
             }
 
             /*
-            
 
             KanbanModel task = new KanbanModel();
             task.ColorKey = "High";
