@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Devart.Data.SQLite;
 
 namespace ScrumDashboard
 {
@@ -51,15 +52,33 @@ namespace ScrumDashboard
         public TaskDetails()
         {
             // DataContext takes a connection string. 
-            DataContext db = new DataContext("Data Source=andrew256;Initial Catalog=scrumdashboard;Integrated Security=True");
+            // DataContext db = new DataContext();
+
+            //берем из конфига строку подключения и подключаемся к БД
+            SQLiteConnection Connection = new SQLiteConnection(Properties.Settings.Default.connectionString);
+            Connection.Open();
+
+            //тот самый DatabaseContext, через который мы работаем с БД
+
+            DataContext db = new DataContext(Connection);
 
             // Get a typed table to run queries.
             Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
+            Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
 
-            // Query for customers from London.
+            /*
+             * select spt.ID, sct.Title, spt.State
+             *   from SprintTask spt
+             *    inner join ScrumTask sct
+             *            on sct.ID = spt.ScrumTaskID
+             *  where spt.SprintID = 1
+             */
+            
             var query =
-                from tsk in ScrumTsks
-                select tsk;
+                from spt in SprintTsks
+                join sct in ScrumTsks on spt.ScrumTaskID equals sct.ID
+                where spt.SprintID == 1
+                select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description };
 
             KanbanTasks = new ObservableCollection<KanbanModel>();
             foreach (var task in query) {

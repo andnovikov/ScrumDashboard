@@ -9,7 +9,7 @@
                            WindowStartupLocation="CenterScreen"
                            UserOptionsVisibility="Collapsed">
     <StackPanel>
-        <ComboBox SelectionChanged="ComboBox_SelectionChanged" >
+        <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="10,10,10,0" >
             <ComboBoxItem Content="Sprint 1" Margin="2,0,-2,0"/>
         </ComboBox>
         

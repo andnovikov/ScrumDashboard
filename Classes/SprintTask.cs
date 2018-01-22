@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Linq.Mapping;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ScrumDashboard.Classes
 {
+    [Table(Name = "SprintTask")]
     public class SprintTask
     {
         public SprintTask() { }
 
-        public SprintTask(int ID, int SprintID, ScrumTask Task) {
+        public SprintTask(int ID, int SprintID, int ScrumTaskID, string State) {
             this.ID = ID;
             this.SprintID = SprintID;
-            this.Task = Task;
+            this.ScrumTaskID = ScrumTaskID;
+            this.State = State;
         }
 
+        [Column(IsPrimaryKey = true)]
         public int ID { get; set; }
+        [Column]
         public int SprintID { get; set; }
-        public ScrumTask Task { get; set; }
+        [Column]
+        public int ScrumTaskID { get; set; }
+        [Column]
+        public string State { get; set; }
     }
 }
