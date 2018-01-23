@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScrumDashboard.Classes
 {
+    [Table(Name = "Sprint")]
     public class Sprint
     {
         public Sprint() { }
@@ -17,9 +19,13 @@ namespace ScrumDashboard.Classes
             this.DateEnd = DateEnd;
         }
 
+        [Column(IsPrimaryKey = true)]
         public int ID { get; set; }
+        [Column]
         public int TeamID { get; set; }
+        [Column]
         public DateTime DateStart { get; set; }
+        [Column]
         public DateTime DateEnd { get; set; }
 
     }

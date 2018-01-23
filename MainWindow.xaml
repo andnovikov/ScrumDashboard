@@ -1,18 +1,21 @@
-﻿<layout:SampleLayoutWindow x:Class="ScrumDashboard.MainWindow"
+﻿<layout:SampleLayoutWindow
                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                            xmlns:local="clr-namespace:ScrumDashboard"
                            xmlns:kanban="clr-namespace:Syncfusion.UI.Xaml.Kanban;assembly=Syncfusion.SfKanban.WPF"
                            xmlns:layout="clr-namespace:Syncfusion.Windows.SampleLayout;assembly=Syncfusion.Chart.Wpf.SampleLayout"
+                           xmlns:Classes="clr-namespace:ScrumDashboard.Classes" x:Class="ScrumDashboard.MainWindow"
                            Title="Scrum Dashboard"
                            ResizeMode="CanResizeWithGrip"
                            WindowStartupLocation="CenterScreen"
                            UserOptionsVisibility="Collapsed">
     <StackPanel>
-        <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="10,10,10,0" >
-            <ComboBoxItem Content="Sprint 1" Margin="2,0,-2,0"/>
+        <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="10,10,10,0" IsEnabled="False" >
+            <ComboBox.DataContext>
+                <local:SprintDetails/>
+            </ComboBox.DataContext>
         </ComboBox>
-        
+
         <Grid>
             <Grid.DataContext>
                 <local:TaskDetails />
@@ -20,14 +23,14 @@
 
             <kanban:SfKanban x:Name="Kanban"
                          ItemsSource="{Binding KanbanTasks}"
-                         AutoGenerateColumns="False">
+                         AutoGenerateColumns="False" CardDragEnd="Kanban_CardDragEnd">
                 <kanban:SfKanban.IndicatorColorPalette>
                     <kanban:ColorMapping Color="#FFECB93C"
-                                     Key="High"></kanban:ColorMapping>
+                                     Key="High"/>
                     <kanban:ColorMapping Color="#FF57B94C"
-                                     Key="Normal"></kanban:ColorMapping>
+                                     Key="Normal"/>
                     <kanban:ColorMapping Color="#FF5187C6"
-                                     Key="Low"></kanban:ColorMapping>
+                                     Key="Low"/>
                 </kanban:SfKanban.IndicatorColorPalette>
 
                 <kanban:KanbanColumn Categories="Open,Postponed"
