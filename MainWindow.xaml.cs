@@ -64,6 +64,11 @@ namespace ScrumDashboard
 
             db.SubmitChanges();
         }
+
+        private void SampleLayoutWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
     }
 
     public class TaskDetails
