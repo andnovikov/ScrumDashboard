@@ -25,13 +25,13 @@ namespace ScrumDashboard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=D:\\Source\\ScrumDashboard\\db\\scrumdashboard.db")]
-        public string connectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("\\db\\scrumdashboard.db")]
+        public string DBPath {
             get {
-                return ((string)(this["connectionString"]));
+                return ((string)(this["DBPath"]));
             }
             set {
-                this["connectionString"] = value;
+                this["DBPath"] = value;
             }
         }
     }

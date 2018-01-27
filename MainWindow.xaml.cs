@@ -30,12 +30,10 @@ namespace ScrumDashboard
         public MainWindow()
         {
             InitializeComponent();
-
             var workflow = new WorkflowCollection();
             workflow.Add(new KanbanWorkflow() { Category = "Open", AllowedTransitions = { "InProgress", "Closed", "Closed NoChanges", "Won't Fix" } });
             workflow.Add(new KanbanWorkflow() { Category = "Postponed", AllowedTransitions = { "Open", "InProgress", "Closed", "Closed NoChanges", "Won't Fix" } });
             workflow.Add(new KanbanWorkflow() { Category = "Review", AllowedTransitions = { "InProgress", "Closed", "Postponed" } });
-
             workflow.Add(new KanbanWorkflow() { Category = "InProgress", AllowedTransitions = { "Review", "Postponed" } });
 
             Kanban.Workflows = workflow;
@@ -49,7 +47,7 @@ namespace ScrumDashboard
         private void Kanban_CardDragEnd(object sender, KanbanDragEndEventArgs e)
         {
 
-            SQLiteConnection Connection = new SQLiteConnection(Properties.Settings.Default.connectionString);
+            SQLiteConnection Connection = new SQLiteConnection("Data Source=" + Environment.CurrentDirectory + Properties.Settings.Default.DBPath);
             Connection.Open();
             DataContext db = new DataContext(Connection);
 
@@ -65,10 +63,6 @@ namespace ScrumDashboard
             db.SubmitChanges();
         }
 
-        private void SampleLayoutWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
-        }
     }
 
     public class TaskDetails
@@ -76,7 +70,7 @@ namespace ScrumDashboard
         public TaskDetails()
         {
             // Get connection with connection string from Properties
-            SQLiteConnection Connection = new SQLiteConnection(Properties.Settings.Default.connectionString);
+            SQLiteConnection Connection = new SQLiteConnection("Data Source=" + Environment.CurrentDirectory + Properties.Settings.Default.DBPath);
             Connection.Open();
 
             DataContext db = new DataContext(Connection);
@@ -89,7 +83,7 @@ namespace ScrumDashboard
                 from spt in SprintTsks
                 join sct in ScrumTsks on spt.ScrumTaskID equals sct.ID
                 where spt.SprintID == 1
-                select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description };
+                select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description, sct.ExternalID };
             /*
              * select spt.ID, sct.Title, spt.State
              *   from SprintTask spt
@@ -106,99 +100,11 @@ namespace ScrumDashboard
                 kbTask.Description = task.Description;
                 kbTask.Category = task.Category;
                 kbTask.ColorKey = "High";
-                kbTask.Tags = new string[] { "NewFeature" };
+                kbTask.Tags = new string[] { task.ExternalID.ToString() };
                 kbTask.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
                 KanbanTasks.Add(kbTask);
             }
 
-            /*
-
-            KanbanModel task = new KanbanModel();
-            task.ColorKey = "High";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Low";
-            task.Tags = new string[] { "GanttControl UWP" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Normal";
-            task.Tags = new string[] { "Post processing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "High";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Low";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "High";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.Tags = new string[] { "New control" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "High";
-            task.Tags = new string[] { "Bug fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Normal";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Normal";
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.Tags = new string[] { "Bug Fixing" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "High";
-            task.Tags = new string[] { "New Control" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.Title = "New Feature";
-            task.ID = "29574";
-            task.Description = "";
-            task.Category = "";
-            task.ColorKey = "Normal";
-            task.Tags = new string[] { "New Control" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-
-            task = new KanbanModel();
-            task.ColorKey = "Low";
-            task.Tags = new string[] { "New Control" };
-            task.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
-            Tasks.Add(task);
-             */
         }
 
         public ObservableCollection<ScrumTask> ScrumTasks { get; set; }
@@ -211,7 +117,7 @@ namespace ScrumDashboard
         public SprintDetails()
         {
             //берем из конфига строку подключения и подключаемся к БД
-            SQLiteConnection Connection = new SQLiteConnection(Properties.Settings.Default.connectionString);
+            SQLiteConnection Connection = new SQLiteConnection(Properties.Settings.Default.DBPath);
             Connection.Open();
 
             DataContext db = new DataContext(Connection);

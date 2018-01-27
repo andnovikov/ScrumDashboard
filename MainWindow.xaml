@@ -8,66 +8,64 @@
                            Title="Scrum Dashboard"
                            ResizeMode="CanResizeWithGrip"
                            WindowStartupLocation="CenterScreen"
-                           UserOptionsVisibility="Collapsed" SizeChanged="SampleLayoutWindow_SizeChanged">
-    <StackPanel ScrollViewer.CanContentScroll="True">
-        <syncfusion:ToolBarAdv Height="40" Margin="10,0"/>
-        <Grid Margin="0,0,10,11.14" Height="950.9"  >
-            <Grid.DataContext>
-                <local:TaskDetails />
-            </Grid.DataContext>
+                           UserOptionsVisibility="Collapsed" ShowInTaskbar="True" WindowState="Maximized">
+    <Grid Margin="0,0,0,0" >
+        <Grid.DataContext>
+            <local:TaskDetails />
+        </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <kanban:SfKanban x:Name="Kanban"
+                         Grid.Row="1"
+                         ItemsSource="{Binding KanbanTasks}"
+                         Margin="0,10,0,0"  
+                         AutoGenerateColumns="False"
+                         CardDragEnd="Kanban_CardDragEnd"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <kanban:SfKanban.IndicatorColorPalette>
+                <kanban:ColorMapping Color="#FFECB93C"
+                                     Key="High"/>
+                <kanban:ColorMapping Color="#FF57B94C"
+                                     Key="Normal"/>
+                <kanban:ColorMapping Color="#FF5187C6"
+                                     Key="Low"/>
+            </kanban:SfKanban.IndicatorColorPalette>
 
-            <kanban:SfKanban x:Name="Kanban"
-                             ItemsSource="{Binding KanbanTasks}"
-                             AutoGenerateColumns="False" CardDragEnd="Kanban_CardDragEnd" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="5,5,5,0">
-                <kanban:SfKanban.CardStyle>
-                    <kanban:KanbanCardStyle/>
-                </kanban:SfKanban.CardStyle>
-                <kanban:SfKanban.IndicatorColorPalette>
-                    <kanban:ColorMapping Color="#FFECB93C"
-                                         Key="High"/>
-                    <kanban:ColorMapping Color="#FF57B94C"
-                                         Key="Normal"/>
-                    <kanban:ColorMapping Color="#FF5187C6"
-                                         Key="Low"/>
-                </kanban:SfKanban.IndicatorColorPalette>
-
-                <kanban:KanbanColumn Categories="Open,Postponed"
+            <kanban:KanbanColumn Categories="Open,Postponed"
                                      Title="To Do"
                                      ScrollViewer.CanContentScroll="True" IsTextSearchEnabled="True" />
 
-                <kanban:KanbanColumn Categories="InProgress"
+            <kanban:KanbanColumn Categories="InProgress"
                                      Title="In Progress"
-                                     MaximumLimit="2"
                                      IsExpanded="True"
                                      ScrollViewer.CanContentScroll="True">
-                    <kanban:KanbanColumn.ErrorBarSettings>
-                        <kanban:ErrorBarSettings MinValidationColor="Yellow"
+                <kanban:KanbanColumn.ErrorBarSettings>
+                    <kanban:ErrorBarSettings MinValidationColor="Yellow"
                                                  MaxValidationColor="Red" />
-                    </kanban:KanbanColumn.ErrorBarSettings>
+                </kanban:KanbanColumn.ErrorBarSettings>
 
-                </kanban:KanbanColumn>
-                <kanban:KanbanColumn Categories="Review"
+            </kanban:KanbanColumn>
+            <kanban:KanbanColumn Categories="Review"
                                      Title="For Review"
-                                     MaximumLimit="5"
                                      ScrollViewer.CanContentScroll="True">
-                    <kanban:KanbanColumn.ErrorBarSettings>
-                        <kanban:ErrorBarSettings MinValidationColor="Yellow"
+                <kanban:KanbanColumn.ErrorBarSettings>
+                    <kanban:ErrorBarSettings MinValidationColor="Yellow"
                                                  MaxValidationColor="Red" />
-                    </kanban:KanbanColumn.ErrorBarSettings>
-                </kanban:KanbanColumn>
-                <kanban:KanbanColumn Categories="Closed,Closed NoChanges,Won't Fix"
+                </kanban:KanbanColumn.ErrorBarSettings>
+            </kanban:KanbanColumn>
+            <kanban:KanbanColumn Categories="Closed,Closed NoChanges,Won't Fix"
                                      Title="Done"
-                                     MinimumLimit="2"
-                                     MaximumLimit="10"
                                      AllowDrag="False"
                                      ScrollViewer.CanContentScroll="True">
 
-                    <kanban:KanbanColumn.ErrorBarSettings>
-                        <kanban:ErrorBarSettings MinValidationColor="Yellow"
+                <kanban:KanbanColumn.ErrorBarSettings>
+                    <kanban:ErrorBarSettings MinValidationColor="Yellow"
                                                  MaxValidationColor="Red" />
-                    </kanban:KanbanColumn.ErrorBarSettings>
-                </kanban:KanbanColumn>
-            </kanban:SfKanban>
-        </Grid>
-    </StackPanel>
+                </kanban:KanbanColumn.ErrorBarSettings>
+            </kanban:KanbanColumn>
+
+        </kanban:SfKanban>
+    </Grid>
 </layout:SampleLayoutWindow>

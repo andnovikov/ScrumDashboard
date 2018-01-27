@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScrumDashboard.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="connectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=D:\Source\ScrumDashboard\db\scrumdashboard.db</Value>
+    <Setting Name="DBPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\db\scrumdashboard.db</Value>
     </Setting>
   </Settings>
 </SettingsFile>
