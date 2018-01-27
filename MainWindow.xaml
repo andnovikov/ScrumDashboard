@@ -13,17 +13,17 @@
         <Grid.DataContext>
             <local:TaskDetails />
         </Grid.DataContext>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
         <kanban:SfKanban x:Name="Kanban"
-                         Grid.Row="1"
+                         Grid.Column="0"
                          ItemsSource="{Binding KanbanTasks}"
                          Margin="0,10,0,0"  
                          AutoGenerateColumns="False"
                          CardDragEnd="Kanban_CardDragEnd"
-                         ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto" CardTapped="Kanban_CardTapped">
             <kanban:SfKanban.IndicatorColorPalette>
                 <kanban:ColorMapping Color="#FFECB93C"
                                      Key="High"/>
@@ -67,5 +67,15 @@
             </kanban:KanbanColumn>
 
         </kanban:SfKanban>
+        <StackPanel Margin="0,90,0,0"
+                    Grid.Column="1">
+            <TextBlock x:Name="TaskExternalID" Margin="10,5,0,0" Text="ExternalID" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Name="TaskTitle" Margin="10,5,0,0" Text="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
+            <Border Margin="10,5,5,0"
+                    BorderThickness="0.75"
+                    BorderBrush="#FFE4E4E5">
+                <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"></TextBlock>
+            </Border>
+        </StackPanel>
     </Grid>
 </layout:SampleLayoutWindow>

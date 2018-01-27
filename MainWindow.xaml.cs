@@ -63,6 +63,28 @@ namespace ScrumDashboard
             db.SubmitChanges();
         }
 
+        private void Kanban_CardTapped(object sender, KanbanTappedEventArgs e)
+        {
+            SQLiteConnection Connection = new SQLiteConnection("Data Source=" + Environment.CurrentDirectory + Properties.Settings.Default.DBPath);
+            Connection.Open();
+            DataContext db = new DataContext(Connection);
+
+            // Get a typed table to run queries.
+            Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
+            Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
+
+            Int32.TryParse((e.SelectedCard.Content as KanbanModel).ID, out int SprintTaskID);
+ 
+            ScrumTask tsk = (from sp in SprintTsks
+                             join sc in ScrumTsks on sp.ScrumTaskID equals sc.ID
+                             where sp.ID == SprintTaskID
+                             select sc).SingleOrDefault();
+
+            TaskExternalID.Text = tsk.ExternalID.ToString();
+            TaskTitle.Text = tsk.Title;
+            TaskDescription.Text = tsk.Description;
+            // e.SelectedCard.;
+        }
     }
 
     public class TaskDetails
