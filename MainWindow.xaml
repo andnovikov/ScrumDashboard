@@ -67,15 +67,19 @@
             </kanban:KanbanColumn>
 
         </kanban:SfKanban>
-        <StackPanel Margin="0,90,0,0"
-                    Grid.Column="1">
-            <TextBlock x:Name="TaskExternalID" Margin="10,5,0,0" Text="ExternalID" FontWeight="Bold"></TextBlock>
-            <TextBlock x:Name="TaskTitle" Margin="10,5,0,0" Text="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
-            <Border Margin="10,5,5,0"
+        <Border Margin="0,20,0,0"
+                Grid.Column="1"
+                BorderThickness="0.75"
+                BorderBrush="#FFE4E4E5">
+            <StackPanel>
+                <TextBlock x:Name="TaskExternalID" Margin="10,5,0,0" Text="ExternalID" FontWeight="Bold"></TextBlock>
+                <TextBlock x:Name="TaskTitle" Margin="10,5,0,0" Text="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
+                <Border Margin="10,5,5,0"
                     BorderThickness="0.75"
                     BorderBrush="#FFE4E4E5">
-                <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"></TextBlock>
-            </Border>
-        </StackPanel>
+                    <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"></TextBlock>
+                </Border>
+            </StackPanel>
+        </Border>
     </Grid>
 </layout:SampleLayoutWindow>
