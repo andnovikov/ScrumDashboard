@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\TeamMember.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -122,9 +123,24 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Image10.png" />
+    <Resource Include="Images\alpavlov.png" />
+    <Resource Include="Images\alpetrova.png" />
+    <Resource Include="Images\anovikov.png" />
+    <Resource Include="Images\apavlova.png" />
+    <Resource Include="Images\ashebalkin.png" />
+    <Resource Include="Images\ddyadyura.png" />
+    <Resource Include="Images\dkazakov.png" />
+    <Resource Include="Images\eantipova.png" />
+    <Resource Include="Images\esklyarenko.png" />
+    <Resource Include="Images\fri.png" />
+    <Resource Include="Images\mkostina.png" />
+    <Resource Include="Images\mremizova.png" />
+    <Resource Include="Images\okuzmina.png" />
+    <Resource Include="Images\omorozova.png" />
+    <Resource Include="Images\tillarionova.png" />
+    <Resource Include="Images\vburykh.png" />
+    <Resource Include="Images\vkorabelnikov.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

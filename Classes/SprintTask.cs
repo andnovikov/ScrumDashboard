@@ -11,11 +11,12 @@ namespace ScrumDashboard.Classes
     {
         public SprintTask() { }
 
-        public SprintTask(int ID, int SprintID, int ScrumTaskID, string State) {
+        public SprintTask(int ID, int SprintID, int ScrumTaskID, string State, int TeamMemberID) {
             this.ID = ID;
             this.SprintID = SprintID;
             this.ScrumTaskID = ScrumTaskID;
             this.State = State;
+            this.TeamMemberID = TeamMemberID;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -26,5 +27,7 @@ namespace ScrumDashboard.Classes
         public int ScrumTaskID { get; set; }
         [Column]
         public string State { get; set; }
+        [Column]
+        public int TeamMemberID { get; set; }
     }
 }

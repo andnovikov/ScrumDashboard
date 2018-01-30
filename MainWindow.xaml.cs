@@ -37,6 +37,23 @@ namespace ScrumDashboard
             workflow.Add(new KanbanWorkflow() { Category = "InProgress", AllowedTransitions = { "Review", "Postponed" } });
 
             Kanban.Workflows = workflow;
+
+            SQLiteConnection Connection = new SQLiteConnection("Data Source=" + Environment.CurrentDirectory + Properties.Settings.Default.DBPath);
+            Connection.Open();
+            DataContext db = new DataContext(Connection);
+            Table<TeamMember> TeamMembers = db.GetTable<TeamMember>();
+
+            IQueryable<TeamMember> tmmb = (from tm in TeamMembers
+                                           where tm.TeamID == 1
+                                           select tm);
+
+            foreach (TeamMember tm in tmmb)
+            {
+                ComboBoxItem cbItm = new ComboBoxItem();
+                cbItm.Tag = tm;
+                cbItm.Content = tm.Name;
+                TaskTeamMember.Items.Add(cbItm);
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -81,9 +98,37 @@ namespace ScrumDashboard
                              select sc).SingleOrDefault();
 
             TaskExternalID.Text = tsk.ExternalID.ToString();
+            TaskExternalID.Tag = e.SelectedCard;
             TaskTitle.Text = tsk.Title;
             TaskDescription.Text = tsk.Description;
+            TaskTeamMember.SelectedIndex = -1;
             // e.SelectedCard.;
+        }
+
+        private void TaskTeamMember_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ComboBox).SelectedIndex != -1)
+            {
+                SQLiteConnection Connection = new SQLiteConnection("Data Source=" + Environment.CurrentDirectory + Properties.Settings.Default.DBPath);
+                Connection.Open();
+                DataContext db = new DataContext(Connection);
+
+                // Get a typed table to run queries.
+                Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
+                Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
+
+                TeamMember tm = (((sender as ComboBox).SelectedItem as ComboBoxItem).Tag as TeamMember);
+                Int32.TryParse(((TaskExternalID.Tag as KanbanCardItem).Content as KanbanModel).ID, out int SprintTaskID);
+
+                SprintTask tsk = (from spt in SprintTsks
+                                  where spt.ID == SprintTaskID
+                                  select spt).SingleOrDefault();
+                tsk.TeamMemberID = tm.ID;
+                db.SubmitChanges();
+
+                ((TaskExternalID.Tag as KanbanCardItem).Content as KanbanModel).ImageURL = new Uri(@"Images/" + tm.Nickname + ".png", UriKind.RelativeOrAbsolute);
+                TaskDetails td = new TaskDetails();
+            }
         }
     }
 
@@ -100,12 +145,14 @@ namespace ScrumDashboard
             // Get a typed table to run queries.
             Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
             Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
-            
+            Table<TeamMember> TeamMembers = db.GetTable<TeamMember>();
+
             var query =
                 from spt in SprintTsks
                 join sct in ScrumTsks on spt.ScrumTaskID equals sct.ID
+                join tmm in TeamMembers on spt.TeamMemberID equals tmm.ID
                 where spt.SprintID == 1
-                select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description, sct.ExternalID };
+                select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description, ExternalID = sct.ExternalID, Nickname = tmm.Nickname };
             /*
              * select spt.ID, sct.Title, spt.State
              *   from SprintTask spt
@@ -123,7 +170,9 @@ namespace ScrumDashboard
                 kbTask.Category = task.Category;
                 kbTask.ColorKey = "High";
                 kbTask.Tags = new string[] { task.ExternalID.ToString() };
-                kbTask.ImageURL = new Uri(@"Images/Image10.png", UriKind.RelativeOrAbsolute);
+                if (!task.Nickname.Equals("")) {
+                    kbTask.ImageURL = new Uri(@"Images/" + task.Nickname + ".png", UriKind.RelativeOrAbsolute);
+                }
                 KanbanTasks.Add(kbTask);
             }
 

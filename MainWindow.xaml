@@ -4,7 +4,7 @@
                            xmlns:local="clr-namespace:ScrumDashboard"
                            xmlns:kanban="clr-namespace:Syncfusion.UI.Xaml.Kanban;assembly=Syncfusion.SfKanban.WPF"
                            xmlns:layout="clr-namespace:Syncfusion.Windows.SampleLayout;assembly=Syncfusion.Chart.Wpf.SampleLayout"
-                           xmlns:Classes="clr-namespace:ScrumDashboard.Classes" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" mc:Ignorable="d" x:Class="ScrumDashboard.MainWindow"
+                           xmlns:Classes="clr-namespace:ScrumDashboard.Classes" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:SQLite="clr-namespace:Devart.Data.SQLite;assembly=Devart.Data.SQLite" mc:Ignorable="d" x:Class="ScrumDashboard.MainWindow"
                            Title="Scrum Dashboard"
                            ResizeMode="CanResizeWithGrip"
                            WindowStartupLocation="CenterScreen"
@@ -72,13 +72,14 @@
                 BorderThickness="0.75"
                 BorderBrush="#FFE4E4E5">
             <StackPanel>
-                <TextBlock x:Name="TaskExternalID" Margin="10,5,0,0" Text="ExternalID" FontWeight="Bold"></TextBlock>
-                <TextBlock x:Name="TaskTitle" Margin="10,5,0,0" Text="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
-                <Border Margin="10,5,5,0"
+                <TextBlock x:Name="TaskExternalID" Margin="5,5,0,0" Text="ExternalID" FontWeight="Bold"/>
+                <TextBlock x:Name="TaskTitle" Margin="5,5,0,0" Text="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold"/>
+                <Border Margin="5,5,5,0"
                     BorderThickness="0.75"
                     BorderBrush="#FFE4E4E5">
-                    <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"></TextBlock>
+                    <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"/>
                 </Border>
+                <ComboBox Margin="5,5,5,0" x:Name="TaskTeamMember" SelectionChanged="TaskTeamMember_SelectionChanged"></ComboBox>
             </StackPanel>
         </Border>
     </Grid>
