@@ -71,7 +71,8 @@ namespace ScrumDashboard
             // Get a typed table to run queries.
             Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
 
-            Int32.TryParse((e.SelectedCard.Content as KanbanModel).ID, out int SprintTaskID);
+            int SprintTaskID;
+            Int32.TryParse((e.SelectedCard.Content as KanbanModel).ID, out SprintTaskID);
             SprintTask tsk = (from sp in SprintTsks
                               where sp.ID == SprintTaskID
                               select sp).SingleOrDefault();
@@ -90,7 +91,8 @@ namespace ScrumDashboard
             Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
             Table<ScrumTask> ScrumTsks = db.GetTable<ScrumTask>();
 
-            Int32.TryParse((e.SelectedCard.Content as KanbanModel).ID, out int SprintTaskID);
+            int SprintTaskID;
+            Int32.TryParse((e.SelectedCard.Content as KanbanModel).ID, out SprintTaskID);
  
             ScrumTask tsk = (from sp in SprintTsks
                              join sc in ScrumTsks on sp.ScrumTaskID equals sc.ID
@@ -118,7 +120,8 @@ namespace ScrumDashboard
                 Table<SprintTask> SprintTsks = db.GetTable<SprintTask>();
 
                 TeamMember tm = (((sender as ComboBox).SelectedItem as ComboBoxItem).Tag as TeamMember);
-                Int32.TryParse(((TaskExternalID.Tag as KanbanCardItem).Content as KanbanModel).ID, out int SprintTaskID);
+                int SprintTaskID;
+                Int32.TryParse(((TaskExternalID.Tag as KanbanCardItem).Content as KanbanModel).ID, out SprintTaskID);
 
                 SprintTask tsk = (from spt in SprintTsks
                                   where spt.ID == SprintTaskID
@@ -151,7 +154,7 @@ namespace ScrumDashboard
                 from spt in SprintTsks
                 join sct in ScrumTsks on spt.ScrumTaskID equals sct.ID
                 join tmm in TeamMembers on spt.TeamMemberID equals tmm.ID
-                where spt.SprintID == 1
+                where spt.SprintID == 2
                 select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description, ExternalID = sct.ExternalID, Nickname = tmm.Nickname };
             /*
              * select spt.ID, sct.Title, spt.State
