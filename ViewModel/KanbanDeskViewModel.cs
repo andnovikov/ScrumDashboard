@@ -127,15 +127,36 @@ namespace ScrumDashboard.ViewModel
             return result;
         }
 
+        private bool AuthorFilter(object item)
+        {
+            IKanbanModel task = item as IKanbanModel;
+            bool result = false;
+
+            if (FilterString.Equals(""))
+                result = true;
+            else
+            {
+                result = (task.ImageURL.ToString().Contains(FilterString));
+            }
+
+            return result;
+        }
+
         public bool CanFilter()
         {
             return true;
         }
 
-        public void ExecuteFilter(string e)
+        public void FilterByTag(string e)
         {
             this.FilterString = e;
             this._inventoryView.Filter = TagFilter;
+        }
+
+        public void FilterByAuthor(string e)
+        {
+            this.FilterString = e;
+            this._inventoryView.Filter = AuthorFilter;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -18,10 +18,40 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+
+        <TabControl
+            Grid.Column="0"
+            Grid.Row="0"
+            Height="61"
+            Margin="0,5,0,0">
+            <TabItem Header="Sprint">
+                <ComboBox x:Name="SprintFilter" SelectionChanged="SprintFilter_SelectionChanged"></ComboBox>
+            </TabItem>
+            <TabItem Header="Filter By Task">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Margin="0,2,0,0">
+                    <TextBox x:Name="CardTagFilter" TextWrapping="Wrap" Text="" Height="23" Width="508" TextChanged="CardTagFilter_TextChanged"/>
+                    <Button Margin="5,0,0,0" Content="Apply" Click="CardTagFilterApply_Click" Width="50"/>
+                    <Button Margin="5,0,0,0" Content="Clear" Click="CardTagFilterClear_Click" Width="50"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Filter By Author">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Margin="0,2,0,0">
+                    <ComboBox x:Name="CardAuthorFilter" SelectionChanged="CardAuthorFilter_SelectionChanged" Width="175"></ComboBox>
+                    <Button Margin="5,0,0,0" Content="Clear" Click="CardAuthorFilterClear_Click" Width="50"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
         <kanban:SfKanban x:Name="Kanban"
                          Grid.Column="0"
+                         Grid.Row="1"
                          ItemsSource="{Binding KanbanTasks}"
-                         Margin="0,10,0,0"  
+                         Margin="0,5,0,0"  
                          AutoGenerateColumns="False"
                          CardDragEnd="Kanban_CardDragEnd"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto" CardTapped="Kanban_CardTapped">
@@ -36,7 +66,7 @@
 
             <kanban:KanbanColumn Categories="Open,Postponed"
                                      Title="To Do"
-                                     ScrollViewer.CanContentScroll="True" IsTextSearchEnabled="True" />
+                                     ScrollViewer.CanContentScroll="True" IsTextSearchEnabled="True" Width="286" />
 
             <kanban:KanbanColumn Categories="InProgress"
                                      Title="In Progress"
@@ -68,8 +98,9 @@
             </kanban:KanbanColumn>
 
         </kanban:SfKanban>
-        <Border Margin="0,20,0,0"
+        <Border Margin="5,20,0,0"
                 Grid.Column="1"
+                Grid.Row="1"
                 BorderThickness="0.75"
                 BorderBrush="#FFE4E4E5">
             <StackPanel>
@@ -81,12 +112,6 @@
                     <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"/>
                 </Border>
                 <ComboBox Margin="5,5,5,0" x:Name="TaskTeamMember" SelectionChanged="TaskTeamMember_SelectionChanged"></ComboBox>
-                <GroupBox Header="FIlter" Height="80">
-                    <StackPanel VerticalAlignment="Top" Margin="0,0,-2,0">
-                        <TextBox x:Name="CardTagFilter" TextWrapping="Wrap" Text="" Height="23"/>
-                        <Button Margin="0,5,0,0" Content="Apply" Click="Button_Click"/>
-                    </StackPanel>
-                </GroupBox>
             </StackPanel>
         </Border>
     </Grid>

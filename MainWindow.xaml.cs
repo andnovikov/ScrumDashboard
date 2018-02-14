@@ -39,6 +39,7 @@ namespace ScrumDashboard
                                            where tm.TeamID == 1
                                            select tm);
 
+            
             foreach (TeamMember tm in tmmb)
             {
                 ComboBoxItem cbItm = new ComboBoxItem();
@@ -46,9 +47,17 @@ namespace ScrumDashboard
                 cbItm.Content = tm.Name;
                 TaskTeamMember.Items.Add(cbItm);
             }
+
+            foreach (TeamMember tm in tmmb)
+            {
+                ComboBoxItem cbItm = new ComboBoxItem();
+                cbItm.Tag = tm;
+                cbItm.Content = tm.Name;
+                CardAuthorFilter.Items.Add(cbItm);
+            }
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SprintFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Load sprint tasks
         }
@@ -128,12 +137,50 @@ namespace ScrumDashboard
             }
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        #region CardTagFilter
+        private void CardAuthorFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if ((sender as ComboBox).SelectedIndex != -1)
+            {
+                TeamMember tm = (((sender as ComboBox).SelectedItem as ComboBoxItem).Tag as TeamMember);
+                Kanban.ItemsSource = null;
+                (this.Kanban.DataContext as KanbanDeskViewModel).FilterByAuthor(tm.Nickname);
+                Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
+            }
+        }
+
+        private void CardAuthorFilterClear_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            CardAuthorFilter.SelectedIndex = -1;
             Kanban.ItemsSource = null;
-            (this.Kanban.DataContext as KanbanDeskViewModel).ExecuteFilter(CardTagFilter.Text);
+            (this.Kanban.DataContext as KanbanDeskViewModel).FilterByAuthor("");
             Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
         }
+        #endregion
+
+        #region CardTagFilter
+        private void CardTagFilterApply_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Kanban.ItemsSource = null;
+            (this.Kanban.DataContext as KanbanDeskViewModel).FilterByTag(CardTagFilter.Text);
+            Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
+        }
+
+        private void CardTagFilterClear_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            CardTagFilter.Text = "";
+            Kanban.ItemsSource = null;
+            (this.Kanban.DataContext as KanbanDeskViewModel).FilterByTag(CardTagFilter.Text);
+            Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
+        }
+
+        private void CardTagFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Kanban.ItemsSource = null;
+            (this.Kanban.DataContext as KanbanDeskViewModel).FilterByTag(CardTagFilter.Text);
+            Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
+        }
+        #endregion
     }
 
     public class SprintDetails
@@ -156,7 +203,7 @@ namespace ScrumDashboard
              *            on sct.ID = spt.ScrumTaskID
              *  where spt.SprintID = 1
              */
-
+            
             var ComboSprint =
                 from s in Sprints
                 select new { ID = s.ID };
