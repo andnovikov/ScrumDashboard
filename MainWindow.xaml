@@ -22,7 +22,7 @@
             <RowDefinition Height="66"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
 
         <TabControl
             Grid.Column="0"
@@ -112,6 +112,7 @@
                     <TextBlock x:Name="TaskDescription" Text="Description" TextWrapping="WrapWithOverflow" Height="100"/>
                 </Border>
                 <ComboBox Margin="5,5,5,0" x:Name="TaskTeamMember" SelectionChanged="TaskTeamMember_SelectionChanged"></ComboBox>
+                <TextBlock x:Name="SprintCounter" Margin="5,5,0,0" Text="SprintCounter" TextWrapping="WrapWithOverflow" FontWeight="Bold"/>
             </StackPanel>
         </Border>
     </Grid>

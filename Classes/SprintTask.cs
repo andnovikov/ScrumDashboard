@@ -29,5 +29,7 @@ namespace ScrumDashboard.Classes
         public string State { get; set; }
         [Column]
         public int TeamMemberID { get; set; }
+        [Column]
+        public int Cost { get; set; }
     }
 }

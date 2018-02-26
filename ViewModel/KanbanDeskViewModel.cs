@@ -16,6 +16,8 @@ namespace ScrumDashboard.ViewModel
     {
         public KanbanDeskViewModel ()
         {
+            SprintID = 2;
+
             KanbanTasks = new ObservableCollection<KanbanModel>();
 
             LoadKanban();
@@ -35,12 +37,13 @@ namespace ScrumDashboard.ViewModel
             }
         }
 
+        public int SprintID { get; set; }
+
         private ICollectionView _inventoryView;
 
         public ICollectionView InventoryView { get { return _inventoryView; } }
 
         private string _filterstring;
-
 
         public string FilterString {
             get {
@@ -78,7 +81,7 @@ namespace ScrumDashboard.ViewModel
                 from spt in SprintTsks
                 join sct in ScrumTsks on spt.ScrumTaskID equals sct.ID
                 join tmm in TeamMembers on spt.TeamMemberID equals tmm.ID
-                where spt.SprintID == 2
+                where spt.SprintID == SprintID
                 select new { ID = spt.ID, Title = sct.Title, Category = spt.State, Description = sct.Description, ExternalID = sct.ExternalID, Nickname = tmm.Nickname };
             /*
              * select spt.ID, sct.Title, spt.State
@@ -103,6 +106,12 @@ namespace ScrumDashboard.ViewModel
                 }
                 KanbanTasks.Add(kbTask);
             }
+        }
+
+        public void ReloadKanban()
+        {
+            _kanbanTasks.Clear();
+            LoadKanban();
         }
 
         private bool TagFilter(object item)

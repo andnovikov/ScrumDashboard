@@ -34,7 +34,6 @@ namespace ScrumDashboard
             DataContext db = new DataContext(Connection);
 
             Table<TeamMember> TeamMembers = db.GetTable<TeamMember>();
-
             IQueryable<TeamMember> tmmb = (from tm in TeamMembers
                                            where tm.TeamID == 1
                                            select tm);
@@ -42,24 +41,45 @@ namespace ScrumDashboard
             
             foreach (TeamMember tm in tmmb)
             {
-                ComboBoxItem cbItm = new ComboBoxItem();
-                cbItm.Tag = tm;
-                cbItm.Content = tm.Name;
-                TaskTeamMember.Items.Add(cbItm);
+                try
+                {
+                    ComboBoxItem cbItm = new ComboBoxItem();
+                    cbItm.Tag = tm;
+                    cbItm.Content = tm.Name;
+                    TaskTeamMember.Items.Add(cbItm);
+                }
+                catch { }
+
+                try
+                {
+                    ComboBoxItem cbItm = new ComboBoxItem();
+                    cbItm.Tag = tm;
+                    cbItm.Content = tm.Name;
+                    CardAuthorFilter.Items.Add(cbItm);
+                }
+                catch { }
             }
 
-            foreach (TeamMember tm in tmmb)
+            Table<Sprint> Sprints = db.GetTable<Sprint>();
+            IQueryable<Sprint> sprts = (from sp in Sprints
+                                        select sp);
+
+            foreach (Sprint sp in Sprints)
             {
-                ComboBoxItem cbItm = new ComboBoxItem();
-                cbItm.Tag = tm;
-                cbItm.Content = tm.Name;
-                CardAuthorFilter.Items.Add(cbItm);
+                ComboBoxItem spItm = new ComboBoxItem();
+                spItm.Tag = sp;
+                spItm.Content = "Sprint " + sp.ID.ToString() + " (" + sp.DateStart.ToString() + "-" + sp.DateEnd.ToString() + ")";
+                SprintFilter.Items.Add(spItm);
             }
         }
 
         private void SprintFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Load sprint tasks
+            Kanban.ItemsSource = null;
+            (this.Kanban.DataContext as KanbanDeskViewModel).SprintID = (((sender as ComboBox).SelectedItem as ComboBoxItem).Tag as Sprint).ID;
+            (this.Kanban.DataContext as KanbanDeskViewModel).ReloadKanban();
+            Kanban.ItemsSource = (Kanban.DataContext as KanbanDeskViewModel).InventoryView;
         }
 
         private void Kanban_CardDragEnd(object sender, KanbanDragEndEventArgs e)
@@ -78,6 +98,34 @@ namespace ScrumDashboard
                               where sp.ID == SprintTaskID
                               select sp).SingleOrDefault();
             tsk.State = e.TargetKey.ToString();
+
+            if (e.TargetKey.ToString().Equals("Closed") ||
+                e.TargetKey.ToString().Equals("Review")) {
+
+                int bp = 0;
+                switch (e.TargetKey.ToString()) {
+                    case "Review":
+                        bp = Convert.ToInt32(Math.Round(tsk.Cost*0.8));
+                        break;
+                    case "Closed":
+                        bp = Convert.ToInt32(Math.Round(tsk.Cost*0.2));
+                        break;
+                };
+                    
+
+                Table<SprintBurnData> SprintBrnDt = db.GetTable<SprintBurnData>();
+                SprintBurnData brnDat = new SprintBurnData
+                {
+                    SprintID = 3,
+                    BurnDate = DateTime.Today,
+                    BurnPoint = bp,
+                    SprintTaskID = SprintTaskID
+                };
+
+
+                SprintBrnDt.InsertOnSubmit(brnDat);
+            }
+            
 
             db.SubmitChanges();
         }

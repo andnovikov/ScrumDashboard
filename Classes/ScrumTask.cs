@@ -35,5 +35,11 @@ namespace ScrumDashboard.Classes
         public Uri ImageURL { get; set; }
         [Column]
         public object ColorKey { get; set; }*/
+        [Column]
+        public int AnalysisTime { get; set; }
+        [Column]
+        public int DevelopTime { get; set; }
+        [Column]
+        public int TestingTime { get; set; }
     }
 }
